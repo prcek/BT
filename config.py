@@ -17,8 +17,16 @@ class JsonProperty2(ndb.TextProperty):
         return json.loads(value)
 
 
+class Option(ndb.Model):
+    name = ndb.StringProperty()
+    value = ndb.StringProperty()
+
 class Config(ndb.Model):
     name = ndb.StringProperty()
-    options = JsonProperty2()
+    options = ndb.StructuredProperty(Option,repeated=True)
+
+
+
+
 
 

@@ -40,7 +40,7 @@ def after_request(resp):
 def teardown_request(e=None):
 	app.logger.info('teardown_request')
 
-from config import Config
+from config import Config, Option
 
 
 @app.route('/')
@@ -54,6 +54,7 @@ def hello(name=None):
 @app.route('/setup')
 def setup():
 	""" Setup default config - TEST """
-	config = Config(name='default', options={'url':'http://xxx'})
+#	config = Config(name='default', options={'url':'http://xxx'})
+	config = Config(name='default', options=[Option(name='url',value='http://')])
 	config.put()
 	return render_template('ok.html', message='default config created.')
