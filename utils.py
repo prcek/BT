@@ -4,6 +4,8 @@ from flask import current_app
 
 from flask import _request_ctx_stack as stack
 
+from config import Config
+
 class Gae(object):
 
     def __init__(self, app=None):
@@ -18,11 +20,13 @@ class Gae(object):
     def teardown(self, exception):
         ctx = stack.top
         if hasattr(ctx, 'gae_config'):
-            self.app.logger.info('gae_config save')
+            if ctx.gae_config.changed:
+                self.app.logger.debug('`Gae teardown, save config')
+                ctx.gae_config.save()
 
     def get_config(self):
-        self.app.logger.info('gae_config load')
-        return "config values"
+        self.app.logger.info('Gae loading config')
+        return Config.get_global()
 
     @property
     def config(self):
