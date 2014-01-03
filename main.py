@@ -48,6 +48,7 @@ def teardown_request(e=None):
 def hello(name=None):
 	""" Return hello template at application root URL."""
 	app.logger.info(gae.config)
+	app.logger.info(gae.session)
 	return render_template('hello.html', name=name)
 
 
@@ -58,3 +59,24 @@ def setup():
 	gae.config['name']='value'
 
 	return render_template('ok.html', message='default config created.')
+
+
+@app.route('/session_test')
+def session_test():
+	""" Session - TEST """
+	app.logger.info(gae.session.options)
+	gae.session['name']='value'
+	app.logger.info(gae.session.options)
+
+
+	return render_template('ok.html', message='session created.')
+
+@app.route('/session_clear')
+def session_clear_test():
+	""" Session - TEST """
+	app.logger.info(gae.session.options)
+	gae.session.clear()
+	
+
+	return render_template('ok.html', message='session cleared.')
+
